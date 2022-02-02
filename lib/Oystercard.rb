@@ -4,6 +4,7 @@ class Oystercard
   MINIMUM_BALANCE = 1
   attr_reader :balance
   attr_reader :entry_station
+  attr_reader :exit_station
   attr_reader :journey_hash 
 
   def initialize
@@ -16,15 +17,18 @@ class Oystercard
     @balance += amount
   end
 
-  def touch_in(station)
+  def touch_in(entry_station)
     fail "Balance low!" if balance < MINIMUM_BALANCE 
-    @entry_station = station
+    @entry_station = entry_station
+    @exit_station = nil
   end
 
   def touch_out(exit_station)
     journey_hash.store(entry_station, exit_station)
     deduct(MINIMUM_BALANCE)
+    @exit_station = exit_station
     @entry_station = nil
+    
   end
 
   def in_journey?
