@@ -5,11 +5,12 @@ class Oystercard
   attr_reader :balance
   attr_reader :entry_station
   attr_reader :exit_station
-  attr_reader :journey_hash 
+  attr_reader :journey_history
 
   def initialize
     @balance = 0
-    @journey_hash = {}
+    @journey_history = []
+    # @journey_hash = {}
   end
 
   def top_up(amount)
@@ -24,15 +25,21 @@ class Oystercard
   end
 
   def touch_out(exit_station)
-    journey_hash.store(entry_station, exit_station)
     deduct(MINIMUM_BALANCE)
     @exit_station = exit_station
+    create_the_journey_history
     @entry_station = nil
     
   end
 
   def in_journey?
     !!entry_station
+  end
+
+  def create_the_journey_history
+    journey_hash = {}
+    journey_hash.store(entry_station, exit_station)
+    @journey_history << journey_hash
   end
   
   private

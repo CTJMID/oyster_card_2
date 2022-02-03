@@ -83,14 +83,14 @@ it {is_expected.to respond_to(:top_up).with(1).argument}
   let(:exit){ double :exit }
 
     it 'should be empty before any journeys have been taken' do
-      expect(subject.journey_hash).to eq({})
+      expect(subject.journey_history).to eq([])
     end
 
     it 'should store and entry & exit key value pair after touching out' do
        subject.top_up(5)
        subject.touch_in(entry)
        subject.touch_out(exit)
-       expect(subject.journey_hash).to eq({entry => exit})
+       expect(subject.journey_history).to eq([{entry => exit}])
     end
   end
 end
